@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RentCarClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RentCarClient.styles.css" asp-append-version="true" />
+
+    <style>
+        /* Navbar styling */
+        .navbar {
+            background-color: #E5CFFE;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #87788B !important;
+        }
+
+        /* Login and Register buttons */
+        .btn-outline-primary {
+            background-color: #FFC8D1;
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #FFC8D1;
+            color: #FFFFFF;
+            border: none;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #E5CFFE;
+            color: #8F7FA6;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Footer link styling */
+        .footer a {
+            color: #8F7FA6;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .body {
+            background-color: #F7F2F8;
+        }
+    </style>
+</head>
+<body class="body">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand ms-2" asp-area="" asp-controller="Home" asp-action="Index">RentCar</a>
+                
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Riwayat">Riwayat Penyewaan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="KontakKami">Kontak Kami</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Customer" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" asp-area="" asp-controller="Customer" asp-action="Register">Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 RentCar App. Semua hak dilindungi.
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@latest/underscore-umd-min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

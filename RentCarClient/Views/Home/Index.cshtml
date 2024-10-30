@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "RentCar - Home";
+}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col text-center">
+            <h3 class="display">Selamat Datang di Rental Mobil Kami</h3>
+        </div>
+    </div>
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4 bg-light-blue">
+                <div class="form-horizontal d-flex align-items-center justify-content-between">
+                    <div class="form-group d-flex flex-column align-items-start me-3">
+                        <label for="rentalDate" class="form-label">Rental Date:</label>
+                        <input type="date" id="rentalDate" class="form-control" />
+                    </div>
+                    <div class="form-group d-flex flex-column align-items-start me-3">
+                        <label for="returnDate" class="form-label">Return Date:</label>
+                        <input type="date" id="returnDate" class="form-control" />
+                    </div>
+                    <button class="btn btn-primary" id="searchButton">Cari</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5" id="wrapper-table-car">
+        <!-- Daftar mobil akan tampil di sini setelah pengguna klik tombol Cari -->
+    </div>
+</div>
+
+@await Html.PartialAsync("Component/component-table-car");
+
+@section Scripts {
+    <script>
+        $(document).ready(async function () {
+            var app = {};
+
+            app.getReq = function (url, params) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        data: params,
+                        success: function (response) {
+                            resolve(response);
+                        },
+                        error: function (error) {
+                            reject(error);
+                        },
+                        contentType: "application/json"
+                    });
+                });
+            };
+
+            async function getCarList() {
+                try {
+                    let carListResponse = await app.getReq("/Car/GetCar");
+
+                    if (carListResponse) {
+                        return carListResponse.data;
+                    }
+                } catch (error) {
+                    alert("Error: " + error.responseText);
+                    return [];
+                }
+            }
+
+            function displayCars(carList) {
+                const templateTableCar = _.template($("#component-table-car").html());
+                $("#wrapper-table-car").html(templateTableCar({ data: carList }));
+            }
+
+            // Load available cars when "Cari" button is clicked
+            $("#searchButton").on("click", async function () {
+                const carList = await getCarList();
+                displayCars(carList);
+            });
+        });
+    </script>
+}
+
+<style>
+    .display {
+        color: #8F7FA6;
+    }
+
+    .bg-light-blue {
+        background-color: #BDE0FE;
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        background-color: #FFC8D1;
+        color: #FFFFFF;
+        border: none;
+    }
+
+    .form-horizontal .form-group {
+        flex: 1;
+    }
+
+    #searchButton {
+        margin-top: 1.75rem; 
+    }
+</style>

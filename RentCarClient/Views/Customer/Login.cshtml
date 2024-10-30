@@ -1,0 +1,99 @@
+﻿<div class="d-flex justify-content-center mt-4">
+    <div class="col-md-4"> <!-- Adjusted width to make it slimmer -->
+        <div class="card" style="background-color: #BDE0FE; min-height: 400px; padding: 20px 20px 10px 20px;"> <!-- Reduced height and bottom padding -->
+            <div class="card-body">
+                <div class="card-title mb-3">
+                    <h4>Sign In</h4>
+                </div>
+                <div class="card-text">
+                    <div class="mb-3">
+                        <label for="txtEmail" class="form-label">Email</label>
+                        <input type="text" id="txtEmail" class="form-control">
+                        <div id="txtEmail-error" class="error-text text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtPassword" class="form-label">Password</label>
+                        <input type="password" id="txtPassword" class="form-control"> <!-- Changed to password type -->
+                        <div id="txtPassword-error" class="error-text text-danger"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3 w-100" id="btnLoginCustomer">Masuk</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(async function () {
+            var app = {};
+
+            app.postReq = function (url, params) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: JSON.stringify(params),
+                        success: function (response) {
+                            resolve(response);
+                        },
+                        error: function (error) {
+                            reject(error);
+                        },
+                        contentType: "application/json; charset=utf-8",
+                    });
+                });
+            }
+
+            async function loginCustomer(param) {
+                try {
+                    let loginCustomerResponse = await app.postReq("/Customer/LoginCustomer", param);
+                    alert(loginCustomerResponse.data);
+
+                    if (loginCustomerResponse.statusCode == 200) {
+                        window.location.href = '/Home/Index'; 
+                    }
+                } catch (error) {
+                    alert("Error signing in customer: " + error);
+                    location.reload();
+                    return false;
+                }
+            }
+
+            function validateRequest() {
+                let errorMessages = "";
+                $(".error-text").html(""); 
+
+                const email = $("#txtEmail").val();
+                const password = $("#txtPassword").val();
+
+                if (!email) {
+                    errorMessages = "Email cannot be empty.";
+                    $("#txtEmail-error").html(errorMessages);
+                }
+
+                if (!password) {
+                    errorMessages = "Password cannot be empty.";
+                    $("#txtPassword-error").html(errorMessages);
+                }
+                
+                if (errorMessages) {
+                    alert("There are errors in your request. Please correct them.");
+                    return false;
+                }
+
+                return {
+                    email: email,
+                    password: password,
+                };
+            }
+
+            $("#btnLoginCustomer").on("click", async function () {
+                const customerData = validateRequest();
+                if (customerData) {
+                    await loginCustomer(customerData); 
+                }
+            });
+        });
+    </script>
+}
